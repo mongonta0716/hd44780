@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 ###########################################################################
 #Filename      :HD44780.py
-#Description   :i2c 1602 lcd library
+#Description   :i2c lcd library
 #Author        :Takao Akaki
-#Website       :https://mongonta.blog.fc2.com
+#Website       :https://raspberrypi.mongonta.com
 #Update        :2018/9/9
 ############################################################################
 import smbus
@@ -41,6 +41,7 @@ class HD44780(object):
         ----------
         configfile : str
             lcd config file name
+            Create config file under the conf folder
         """
         dirname = os.path.dirname( os.path.abspath( __file__ ) )
         
@@ -186,6 +187,12 @@ class HD44780(object):
         self.lcd_byte(0x00 ,LCD_CMD)
 
     def shiftcontroll(self, messagelength):
+        """Shift message when display message
+        Parameters
+        ----------
+        messagelength : int
+            message length
+        """
         if self._shiftmode == 1:
             self.lshift()
         elif self._shiftmode == 2:
@@ -208,6 +215,7 @@ class HD44780(object):
                         self._shiftlen = 0
 
     def loadconfig(self):
+        """Load config file"""
         config = configparser.ConfigParser()
         config.read( self._configfile )
         self._i2caddr       = int(config.get('lcd', 'i2c_address'), 0)
@@ -223,8 +231,19 @@ class HD44780(object):
         return self._width
 
     def str2bool(self, boolstring):
+        """Convert value when config file is read"""
         return boolstring.lower() in ("yes", "true", "on", "1", "t")
+
     def lcd_string_kana(self, message, line):
+        """Called when displaying Kana characters 
+           on the LCD when using them.
+        Parameters
+        ----------
+        message : str
+            message data
+        line : int
+            LCD address for the line 
+        """
         codes = u'線線線線線線線線線線線線線線線線　　　　　　　　　　'\
                 u'　　　　　　　!"#$%&()*+,-./0123456789:;<=>?@ABCDEFG'\
                 u'HIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{'\
