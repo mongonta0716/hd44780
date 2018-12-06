@@ -1,47 +1,48 @@
-# HD44780互換LCD用のI2C通信モジュール
+# I2C communication module of HD44780 compatible LCD for Raspberry Pi
 
-LCD1602A,LCD2004AのHD44780互換コントローラーを搭載したLCDをI2C経由で制御するためのPythonモジュールです。
+It is a module that controls the LCD equipped with HD44780 compatible controller such as LCD1602A, LCD2004A via I2C.
 
-## 動作環境
-Python3で動作します。
-※configparserの部分を書き換えればPython2でも動作します。
+## Requirements
 
-## 必要なパッケージ
-カナ文字を利用するためmojimojiを使います。
-pip3でインストールしてください。  
+- Python3
+※Changing the configparser part will work with Python2 as well.
+
+- mojimoji==0.0.8
+
+## Before install
+This module use mojimoji to display japanese kana characters.
 ```pip3 install mojimoji```
 
-# 設定ファイル
-confフォルダ配下に配置します。conf/lcdsample.confを参考にしてください。
-## 設定項目
+# Setting config file
+Create a config file and place it under the conf folder.Refer to conf/lcdsample.conf.
+## Settings
 - i2c_address  
-I2Cアドレスを設定して下さい。  
-デフォルトはPCF9574Tの0x27です。  
-PCF9574ATの場合は0x3fを設定してください。  
+The default I2C address is 0x27 of PCF9574T.
+For PCF9574AT, the default I2C address is 0x3f.
 - width  
-LCDの桁数を設定します。
+Number of display digits on LCD
 - lines  
-LCDの行数を指定します。
+Number of display rows on LCD
 - backlight  
-バックライト制御用です。通常はOnで。
+Backlight control flag
+Normally set to 'On'.
+
 - shiftmode  
-widthで設定した桁数をオーバーした際にシフトするモードを指定します。
+Mode to shift when the number of display digits is exceeded
 	- 0  
-シフトしません。
+Not shift
 	- 1  
-左に1バイトシフトします。
+One byte left shift
 	- 2  
-右に1バイトシフトします。
+One byte right shift
 	- 3  
-左右交互にシフトします。
+Shift left and right alternately
 - kanamode  
-日本語の半角カナ文字を利用する場合はOnにします。  
-文字数をカウントするのに重い処理をしているため半角英数のみの場合はOffにしてください。
+Set 'On' to use japanese kana characters.
 
-# 使い方
-demo.pyとdemo_shift.pyを参考にして組み込んでください。
+# How to use
+Refer to demo.py,demo_shift.py and incorporate it.
 
-# シフトについて
-1602Aだと1行あたり40バイトまでスクロールすることができます。
-2004Aだと40バイトが1,3行目と2,4行目それぞれに出力されるのであまり役に立ちません。
-shiftmodeが1,2の場合は空白も含めて40バイトが繰り返しシフトしていきます。
+# About shift
+With 1602A, up to 40 bytes of characters can be shifted per line.
+In 2004A, 40 bytes of characters are all displayed, so it will not be useful.If shiftmode is 1 or 2, 40 bytes of characters including the blank are shifted.
