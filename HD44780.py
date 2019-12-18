@@ -276,6 +276,6 @@ class HD44780(object):
             elif (codes.find(message2[i]) >= 0):
                 self.lcd_byte(codes.find(message2[i]) + 1, LCD_CHR)
             elif (codes_han.find(message2[i]) >= 0):
-               self.lcd_byte(codes.find(message2[i]) + 1, LCD_CHR)
+                self.lcd_byte(codes.find(message2[i]) + 1, LCD_CHR)
             elif (message2[i] != u' '):
-               self.lcd_byte('?', LCD_CHR)
+                self.lcd_byte('?', LCD_CHR)
